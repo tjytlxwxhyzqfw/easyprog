@@ -1,0 +1,32 @@
+# 'Makefile' template used by easyprog-0.01
+
+<TARGET>: <NAME>.<LANG>
+	<COMPILE>
+
+create:
+	mv -iv <NAME>.<LANG>{.tem,}
+
+compile:
+	<COMPILE>
+
+excute:
+	<EXCUTE>
+
+edit:
+	vim <NAME>.<LANG>
+
+# just for tonight
+
+editi:
+	vim Inputs/<NAME>
+
+st:
+	progfeed go
+
+asb:
+	source-assembler <LANG> <NAME>.<LANG>
+
+0:
+	g++ -std=gnu++11 0000.cpp
+
+

@@ -1,0 +1,5 @@
+1.把tcfparser合并到parser中
+2.用config作为参数改写progconf
+3.反复读代码
+4.目录结构怎么组织?
+5.source-assembler加进来,叫做progasb

@@ -1,0 +1,4 @@
+#! /bin/bash
+
+progconf -t $1
+progfeed init $1

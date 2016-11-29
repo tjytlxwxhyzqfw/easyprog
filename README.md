@@ -1,7 +1,22 @@
-# ojtools
+# easyprog-v0.02
 
-## tcfparser v0.01
-Parse a test case file consisting many test cases into seperated ones.
+## progconf.py
+config a programming environment
 
-## test v0.01
-./test.py binary input script
+## progfeed.py
+config a testing environment
+
+## update.sh
+update the excutables in my system
+
+## parser.py
+parsers
+
+## common.py
+common datas
+
+## tcfparser.py
+parser a test case file into seprated cases
+
+## TODO
+things to do
