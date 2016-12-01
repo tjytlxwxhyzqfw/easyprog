@@ -1,6 +1,7 @@
 import ConfigParser
 import logging
 import subprocess
+import os
 import sys
 
 VERSION = "v0.01"
@@ -20,9 +21,14 @@ CONFIG_FEED_INPUT_FILE = "if"
 CONFIG_FEED_COUNT = "ic"
 CONFIG_FEED_PATTERN = "pat"
 
-def getconfig(path):
+def getconfig(first, second=None):
 	config = ConfigParser.ConfigParser()
-	config.read(path)
+	if os.path.exists(first):
+		config.read(first)
+	elif second and os.path.exists(second):
+		config.read(second)
+	else:
+		assert False # no file valid
 	return config
 
 def printconfig(conf):
@@ -43,9 +49,8 @@ def output(cmd):
 	return p.communicate()[0].strip()
 
 def fwrite(string, path):
-	fil = open(path, "w")
-	fil.write(string)
-	fil.close()
+	with open(path, "w") as fil:
+		fil.write(string)
 
 def fread(path, raw=False):
 	""" Convert a text file into a list of lines
@@ -55,14 +60,12 @@ def fread(path, raw=False):
 	Returns:
 		A list object consisting of lines in target file.
 	"""
-
-	inf = open(path, "r")
-	lns = [x for x in inf]
-	inf.close()
-	if not raw:
-		lns = [x.strip() for x in lns]
-		lns = filter(lambda x: x, lns)
-	return lns
+	with open(path, "r") as inf:
+		lns = [x for x in inf]
+		if not raw:
+			lns = [x.strip() for x in lns]
+			lns = filter(lambda x: x, lns)
+		return lns
 
 def fcont(path):
 	return "".join(fread(path, raw=True))

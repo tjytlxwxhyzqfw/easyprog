@@ -53,20 +53,20 @@ def progfeed(conf):
 	except IOError as e:
 		errquit(str(e), logger)
 
-
-def loadconfig():
-	if os.path.exists("progfeed.conf"):
-		print "Use ./progfeed.conf"
-		feedconfig = getconfig("progfeed.conf")
-	else:
-		path = os.path.join(config.get("DEFAULT", "home"), "etc/progfeed-default.conf")
-		print "Use default: %s"%path
-		feedconfig = getconfig(path)
-		print "Defalt configuration file loaded."
-	return feedconfig
+def configurations():
+	current = "progfeed.conf"
+	home = config.get("DEFAULT", "home")
+	default = os.path.join(home, "etc/progfeed-default.conf");
+	return current, default
 
 def main(argv):
-	feedconfig = loadconfig()
+	# we load the configuration file first
+	# because we need't know anything about
+	# the sourefile name and 
+	current, default = configurations()
+	feedconfig = getconfig(current, default)
+	configkeys = [x[0] for x in feedconfig.items("progfeed")]
+
 	opts, args = getopt.gnu_getopt(argv, "s:", ["set="])
 
 	modes = [x[0] for x in opts]
@@ -77,13 +77,15 @@ def main(argv):
 		if opt in ("-s", "--set"):
 			settingmode = True
 			k, v = parser.eqtparser(arg)
+			if k not in configkeys:
+				print "** unknown key: %s"%k
+				continue
 			feedconfig.set("progfeed", k, v)
 
 	printconfig(feedconfig)
 
 	if settingmode:
 		assert not runningmode
-		print "Settings: "
 		with open("progfeed.conf", "w") as conffile:
 			feedconfig.write(conffile)
 			print "Configuration file written."
